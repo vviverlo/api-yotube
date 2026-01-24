@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models import F, Q
 
 User = get_user_model()
 
@@ -34,6 +35,9 @@ class Post(models.Model):
         null=True
     )
 
+    class Meta:
+        ordering = ('-pub_date',)
+
     def __str__(self):
         return self.text[:15]
 
@@ -51,6 +55,9 @@ class Comment(models.Model):
     )
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ('-created',)
 
 
 class Follow(models.Model):
@@ -70,5 +77,9 @@ class Follow(models.Model):
             models.UniqueConstraint(
                 fields=['user', 'following'],
                 name='unique_follow'
-            )
+            ),
+            models.CheckConstraint(
+                condition=~Q(user=F('following')),
+                name='prevent_self_follow'
+            ),
         ]
