@@ -41,4 +41,4 @@ http://127.0.0.1:8000/api/v1/
 http://127.0.0.1:8000/redoc/
 
 Автор:
-Проект разработан [Islam](https://github.com/vviverlo)
+Ислам Рамазанов
